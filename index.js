@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
+const otpGenerator = require('otp-generator')
 const fs = require("fs/promises");
 const path = require("path");
 const app = express();
@@ -33,7 +34,7 @@ app.post("/post", upload.single("file"), async (req, res) => {
     return res.status(400).send("No file uploaded.");
   }
 
-  const fileId = Date.now();
+  const fileId = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
   // Save the file to the server's disk
   const filePath = path.join(uploadDir, `${fileId}_${req.file.originalname}`);
   await fs.writeFile(filePath, req.file.buffer);
