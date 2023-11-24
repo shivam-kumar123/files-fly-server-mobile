@@ -40,7 +40,7 @@ app.post("/post", upload.single("file"), async (req, res) => {
   // Create a download link for the file
   const downloadLink = `${process.env.DOWNLOAD}/${fileId}`;
   // Do something with the file data or send a response back to the client
-  return res.status(200).json({ downloadLink, fileId });
+  return res.status(200).json({ fileId });
 });
 
 app.get("/download/:fileId", async (req, res) => {
