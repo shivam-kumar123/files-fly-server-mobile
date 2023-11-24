@@ -28,7 +28,6 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 app.post("/post", upload.single("file"), async (req, res) => {
-    console.log('in post route');
   // Access the file through req.file
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
