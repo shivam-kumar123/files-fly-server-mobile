@@ -33,14 +33,19 @@ app.post("/post", upload.single("file"), async (req, res) => {
     return res.status(400).send("No file uploaded.");
   }
 
-  const fileId = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
-  // Save the file to the server's disk
-  const filePath = path.join(uploadDir, `${fileId}_${req.file.originalname}`);
-  await fs.writeFile(filePath, req.file.buffer);
-  // Create a download link for the file
-  const downloadLink = `${process.env.DOWNLOAD}/${fileId}`;
-  // Do something with the file data or send a response back to the client
-  return res.status(200).json({ fileId });
+  try {
+      const fileId = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
+      // Save the file to the server's disk
+      const filePath = path.join(uploadDir, `${fileId}_${req.file.originalname}`);
+      await fs.writeFile(filePath, req.file.buffer);
+      // Create a download link for the file
+      const downloadLink = `${process.env.DOWNLOAD}/${fileId}`;
+      // Do something with the file data or send a response back to the client
+      return res.status(200).json({ fileId });
+  } catch (err) {
+      const fileId = 0;
+      return res.json(500).json({fileId});
+  }
 });
 
 app.get("/download/:fileId", async (req, res) => {
